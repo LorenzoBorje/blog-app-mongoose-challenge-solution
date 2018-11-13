@@ -34,7 +34,10 @@ function generateBlogData() {
   return {
     title: faker.lorem.slug(6),
     content: faker.lorem.sentence(),
-    author: faker.name.findName(),
+    author: {
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName()
+    }  
   }
 }
 
@@ -84,9 +87,100 @@ describe('Blog posts API resource', function() {
           expect(res.body).to.have.lengthOf(count);
         });
     });
+    
+    it('should return blog posts with the right fields', function() {
+      return chai.request(app)
+        .get('/posts')
+        .then(function(res) {
+          expect(res).to.have.status(200);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a('array');
+          expect(res.body).to.have.lengthOf.at.least(1);
+
+          res.body.forEach(function(blogPost) {
+            expect(blogPost).to.be.a('object');
+            expect(blogPost).to.have.keys('id', 'title', 'content', 'author', 'created');
+          });
+        });
+````});
+
+    it('should retrieve one blog post based on id', function() {
+        // strategy:
+        // retrieve one blog post from get request
+        // pass id through to get request for specific blog post
+        // prove that it's the right status, data type
+        // prove that it has the right fields present 
+      
+      let resPost;
+      return chai.request(app)
+        .get('/posts')
+        .then(function(_res) {
+          resPost = _res.body[0];
+          return BlogPost.findById({_id: resPost.id});
+        })
+        .then(function(blogPost) {
+          expect(resPost.id).to.equal(blogPost.id);
+          expect(resPost.title).to.equal(blogPost.title);
+          expect(resPost.content).to.equal(blogPost.content);
+          expect(resPost.author).to.contain(blogPost.author.firstName);
+        });
+    });
 
   });
 
+  describe('POST endpoint', function() {
+    
+    it('should add a new post', function() {
+      
+      const newPost = generateBlogData(); 
+      
+      return chai.request(app)
+        .post('/posts')
+        .send(newPost)
+        .then(function(res) {
+          expect(res).to.have.status(201);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a('object');
+          expect(res.body).to.have.keys('id', 'author', 'title', 'content', 'created');
+        })
+    });
+
+    it('should verify all required fields are present', function() {
+      const newPost = {
+        title: faker.lorem.slug(5),
+        content: faker.lorem.sentence()
+      }
+
+      return chai.request(app)
+        .post('/posts')
+        .send(newPost)
+        .then(function(res) {
+          expect(res).to.have.status(400);
+        });     
+    });
+
+  });
+
+  describe('PUT endpoint', function() {
+    it('should update a post', function() {
+      
+      const updatePost = generateBlogData();
+      let id; 
+
+      return BlogPost.findOne()
+      .then(function(post) {
+        updatePost.id = post.id;
+        return chai.request(app)
+        .put(`/posts/${updatePost.id}`)
+        .send(updatePost)
+        .then(function(res) {
+          expect(res).to.have.status(204);
+        });
+      })
+
+    });
+  });
+  
 });
 
 // tests
