@@ -165,7 +165,6 @@ describe('Blog posts API resource', function() {
     it('should update a post', function() {
       
       const updatePost = generateBlogData();
-      let id; 
 
       return BlogPost.findOne()
       .then(function(post) {
@@ -180,7 +179,23 @@ describe('Blog posts API resource', function() {
 
     });
   });
-  
+
+  describe('DELETE endpoint', function() {
+    it('should delete a post', function() {
+      let id;
+
+      return BlogPost.findOne()
+        .then(function(post) {
+          id = post.id;
+          return chai.request(app)
+          .delete(`/posts/${id}`)
+          .then(function(res) {
+            expect(res).to.have.status(204);
+          })
+        })
+    })
+  })
+
 });
 
 // tests
