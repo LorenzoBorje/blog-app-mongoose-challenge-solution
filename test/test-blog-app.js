@@ -176,7 +176,6 @@ describe('Blog posts API resource', function() {
           expect(res).to.have.status(204);
         });
       })
-
     });
   });
 
