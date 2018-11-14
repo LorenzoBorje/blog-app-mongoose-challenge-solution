@@ -2,3 +2,10 @@ language: node_js
 node_js: node
 services:
 - mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: cj5aFHilYfp0fIE19Xy4X/gDyQQShcd42qjrGnDb5cZZYQ7pOBMWMbcWtPYQuZsvOl226TZGDx2yO2iXt6ohCx1qc43IUqADgKxwPMx1t9oNoroO+IOUwSPF2PtybFUCpo+jWOXquZ+jdKPPkBa/PXBKV3byZBMINOeRa8K+uyv6+hadZnxICNpz1UwlCQYLVnbqgRiYTQGZR50q+klVlFJlqudQmoM2VHhUmyi90GiRNwC1tgpSS7l64gN+pedNbNEx3CkfvYsNyRMgGVLdBpLAHqX2ecSixqY3tZJxPwIZXjX5vKFPZDiwUSzVpGY5Y6s7wmuzJd+HMkM/yB7ZX2cr70auOFvKHENCTTB4L2VWjH+xoehmbp52dFtAd4xw5CIdxkEWNH9Lgd5+xwnIrnAvcfezuI/xR5VG4k1qN4jXf6UG7yxEXvHpef30MQ032hHq4Epc2nr2mTb8FufFTi/4JThRiu2WsU/6rYSUqoVm/FDUNSXED0v4vLGJCveSxkCqBggxzCZCVsEqXkLew41YUVjObRIULiW3soO1Hq4I/ObHrhqNNbawQP3yHnmOd9fEzuv70SHUjIFAmmSwsQqQTFxNEzVsNHo9L6LLCOes+yUeC6K1xQt+QwVlWMo283cA0HpwMlGRHUnzpnrP7adrf7NZcgnXSm844VtLrWQ=
+  app: stormy-thicket-15221
+  on:
+    repo: LorenzoBorje/blog-app-mongoose-challenge-solution
